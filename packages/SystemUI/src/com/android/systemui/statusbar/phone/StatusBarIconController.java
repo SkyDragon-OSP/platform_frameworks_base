@@ -38,6 +38,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.android.internal.statusbar.StatusBarIcon;
+import com.android.internal.util.NotificationColorUtil;
+import com.android.systemui.BatteryLevelTextView;
 import com.android.systemui.BatteryMeterView;
 import com.android.systemui.FontSizeUtils;
 import com.android.systemui.Interpolators;
@@ -74,7 +76,9 @@ public class StatusBarIconController extends StatusBarIconList implements Tunabl
 
     private NotificationIconAreaController mNotificationIconAreaController;
     private View mNotificationIconAreaInner;
-
+    private View mNotificationIconArea;
+    private ImageView mMoreIcon;
+    private BatteryLevelTextView mBatteryLevelTextView;
     private BatteryMeterView mBatteryMeterView;
     private BatteryMeterView mBatteryMeterViewKeyguard;
     private TextView mClock;
@@ -128,7 +132,8 @@ public class StatusBarIconController extends StatusBarIconList implements Tunabl
         notificationIconArea.addView(mNotificationIconAreaInner);
 
         mStatusIconsKeyguard = (LinearLayout) keyguardStatusBar.findViewById(R.id.statusIcons);
-
+        mBatteryLevelTextView =
+                (BatteryLevelTextView) statusBar.findViewById(R.id.battery_level_text);
         mBatteryMeterView = (BatteryMeterView) statusBar.findViewById(R.id.battery);
         mBatteryMeterViewKeyguard = (BatteryMeterView) keyguardStatusBar.findViewById(R.id.battery);
         scaleBatteryMeterViews(context);
@@ -475,7 +480,6 @@ public class StatusBarIconController extends StatusBarIconList implements Tunabl
         mTintChangePending = true;
         mPendingDarkIntensity = darkIntensity;
     }
-
     /**
      * @return the tint to apply to {@param view} depending on the desired tint {@param color} and
      *         the screen {@param tintArea} in which to apply that tint
@@ -507,6 +511,27 @@ public class StatusBarIconController extends StatusBarIconList implements Tunabl
     private static boolean isInArea(Rect area, View view) {
         if (area.isEmpty()) {
             return true;
+    private void applyIconTint() {
+        for (int i = 0; i < mStatusIcons.getChildCount(); i++) {
+            StatusBarIconView v = (StatusBarIconView) mStatusIcons.getChildAt(i);
+            v.setImageTintList(ColorStateList.valueOf(mIconTint));
+        }
+        mSignalCluster.setIconTint(mIconTint, mDarkIntensity);
+        mMoreIcon.setImageTintList(ColorStateList.valueOf(mIconTint));
+        mBatteryLevelTextView.setTextColor(mIconTint);
+        mBatteryMeterView.setDarkIntensity(mDarkIntensity);
+        mClock.setTextColor(mIconTint);
+        applyNotificationIconsTint();
+    }
+
+    private void applyNotificationIconsTint() {
+        for (int i = 0; i < mNotificationIcons.getChildCount(); i++) {
+            StatusBarIconView v = (StatusBarIconView) mNotificationIcons.getChildAt(i);
+            boolean isPreL = Boolean.TRUE.equals(v.getTag(R.id.icon_is_pre_L));
+            boolean colorize = !isPreL || isGrayscale(v);
+            if (colorize) {
+                v.setImageTintList(ColorStateList.valueOf(mIconTint));
+            }
         }
         sTmpRect.set(area);
         view.getLocationOnScreen(sTmpInt2);

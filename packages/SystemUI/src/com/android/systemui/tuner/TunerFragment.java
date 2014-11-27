@@ -78,6 +78,7 @@ public class TunerFragment extends PreferenceFragment {
     public void onResume() {
         super.onResume();
         getActivity().setTitle(R.string.system_ui_tuner);
+        updateBatteryPct();
 
         MetricsLogger.visibility(getContext(), MetricsEvent.TUNER, true);
     }
@@ -111,8 +112,16 @@ public class TunerFragment extends PreferenceFragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
     public static class TunerWarningFragment extends DialogFragment {
+    private void updateBatteryPct() {
+        mBatteryPct.setOnPreferenceChangeListener(null);
+        mBatteryPct.setOnPreferenceChangeListener(mBatteryPctChange);
+    }
+
+    private final class SettingObserver extends ContentObserver {
+        public SettingObserver() {
+            super(new Handler());
+        }
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             return new AlertDialog.Builder(getContext())
@@ -127,4 +136,12 @@ public class TunerFragment extends PreferenceFragment {
                     }).show();
         }
     }
+    private final OnPreferenceChangeListener mBatteryPctChange = new OnPreferenceChangeListener() {
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+            final boolean v = (Boolean) newValue;
+            MetricsLogger.action(getContext(), MetricsLogger.TUNER_BATTERY_PERCENTAGE, v);
+            return true;
+        }
+    };
 }
