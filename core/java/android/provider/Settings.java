@@ -3662,6 +3662,18 @@ public final class Settings {
          */
         public static final String SHOW_ALARM_FULLSCREEN = "show_alarm_fullscreen";
 
+        public static final String STATUS_BAR_CLOCK = "status_bar_clock";
+
+        /**
+         * Display style of AM/PM next to clock in status bar
+         * 0: Normal display (Eclair stock)
+         * 1: Small display (Froyo stock)
+         * 2: No display (Gingerbread/ICS stock)
+         * default: 2
+         * @hide
+         */
+        public static final String STATUS_BAR_AM_PM = "status_bar_am_pm";
+
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
@@ -3717,7 +3729,9 @@ public final class Settings {
             LOCK_TO_APP_ENABLED,
             NOTIFICATION_SOUND,
             ACCELEROMETER_ROTATION,
-            NOTIFICATION_LIGHT_SCREEN_ON
+            NOTIFICATION_LIGHT_SCREEN_ON,
+            STATUS_BAR_CLOCK,
+            STATUS_BAR_AM_PM
         };
 
         /**
