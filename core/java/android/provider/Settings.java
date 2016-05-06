@@ -3698,6 +3698,11 @@ public final class Settings {
          */
         public static final String STATUS_BAR_CLOCK_DATE_FORMAT = "statusbar_clock_date_format";
 
+        /**
+         * Enable double tap gesture anywhere on the lock screen put device to sleep
+         * @hide
+         */
+        public static final String DOUBLE_TAP_SLEEP_ANYWHERE = "double_tap_sleep_anywhere";        /**
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
