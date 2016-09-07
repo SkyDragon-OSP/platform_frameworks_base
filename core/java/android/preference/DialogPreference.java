@@ -54,7 +54,7 @@ public abstract class DialogPreference extends Preference implements
         DialogInterface.OnClickListener, DialogInterface.OnDismissListener,
         PreferenceManager.OnActivityDestroyListener {
     private AlertDialog.Builder mBuilder;
-    
+
     private CharSequence mDialogTitle;
     private CharSequence mDialogMessage;
     private Drawable mDialogIcon;
