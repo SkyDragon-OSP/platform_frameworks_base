@@ -779,7 +779,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     private static abstract class SinglePressAction implements Action {
         private final int mIconResId;
         private final Drawable mIcon;
-        private final int mMessageResId;
+        protected int mMessageResId;
         private final CharSequence mMessage;
 
         protected SinglePressAction(int iconResId, int messageResId) {
