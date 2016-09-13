@@ -564,7 +564,7 @@
     <string name="safeMode">Safe mode</string>
 
     <!-- Label for the Android system components when they are shown to the user. -->
-    <string name="android_system_label">Android System</string>
+    <string name="android_system_label">SkyDragon System</string>
 
     <!-- Label for the user owner in the intent forwarding app. -->
     <string name="user_owner_label">Switch to Personal</string>
@@ -2781,16 +2781,16 @@
       has violated its self-enforced StrictMode policy.</string>
 
     <!-- [CHAR LIMIT=40] Title of dialog that is shown when performing a system upgrade. -->
-    <string name="android_upgrading_title">Android is upgrading\u2026</string>
+    <string name="android_upgrading_title">SkyDragon is upgrading\u2026</string>
 
     <!-- [CHAR LIMIT=40] Title of dialog that is shown when system is starting. -->
-    <string name="android_start_title">Android is starting\u2026</string>
+    <string name="android_start_title">SkyDragon is starting\u2026</string>
 
     <!-- [CHAR LIMIT=NONE] Message shown in upgrading dialog when doing an fstrim. -->
     <string name="android_upgrading_fstrim">Optimizing storage.</string>
 
     <!-- [CHAR LIMIT=40] Title of notification that is shown when performing a system upgrade. -->
-    <string name="android_upgrading_notification_title">Android is upgrading</string>
+    <string name="android_upgrading_notification_title">SkyDragon is upgrading</string>
     <!-- [CHAR LIMIT=200] Body of notification that is shown when performing a system upgrade. -->
     <string name="android_upgrading_notification_body">Some apps may not work properly until the upgrade finishes</string>
 
@@ -2806,7 +2806,7 @@
     <string name="android_upgrading_starting_apps">Starting apps.</string>
 
     <!-- [CHAR LIMIT=NONE] Message to show in upgrading dialog when the bulk of the upgrade work is done. -->
-    <string name="android_upgrading_complete">Finishing boot.</string>
+    <string name="android_upgrading_complete">Poking the Dragon..</string>
 
     <!-- Notification text to tell the user that a heavy-weight application is running. -->
     <string name="heavy_weight_notification"><xliff:g id="app">%1$s</xliff:g> running</string>

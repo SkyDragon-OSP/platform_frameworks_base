@@ -116,17 +116,17 @@
     <bool name="config_sendAudioBecomingNoisy">true</bool>
 
     <!-- The duration (in milliseconds) of a short animation. -->
-    <integer name="config_shortAnimTime">200</integer>
+    <integer name="config_shortAnimTime">100</integer>
 
     <!-- The duration (in milliseconds) of a medium-length animation. -->
-    <integer name="config_mediumAnimTime">400</integer>
+    <integer name="config_mediumAnimTime">200</integer>
 
     <!-- The duration (in milliseconds) of a long animation. -->
-    <integer name="config_longAnimTime">500</integer>
+    <integer name="config_longAnimTime">250</integer>
 
     <!-- The duration (in milliseconds) of the activity open/close and fragment open/close animations. -->
-    <integer name="config_activityShortDur">150</integer>
-    <integer name="config_activityDefaultDur">220</integer>
+    <integer name="config_activityShortDur">75</integer>
+    <integer name="config_activityDefaultDur">110</integer>
 
     <!-- Duration for the dim animation behind a dialog.  This may be either
          a percentage, which is relative to the duration of the enter/open
@@ -217,7 +217,7 @@
 
     <!-- The duration (in milliseconds) that the radio will scan for a signal
          when there's no network connection. If the scan doesn't timeout, use zero -->
-    <integer name="config_radioScanningTimeout">0</integer>
+    <integer name="config_radioScanningTimeout">220</integer>
 
     <!-- XXXXX NOTE THE FOLLOWING RESOURCES USE THE WRONG NAMING CONVENTION.
          Please don't copy them, copy anything else. -->
@@ -469,7 +469,7 @@
     <integer translatable="false" name="config_wifi_framework_network_switch_rx_packet_threshold">20</integer>
 
     <!-- Integer indicating wpa_supplicant scan interval in milliseconds -->
-    <integer translatable="false" name="config_wifi_supplicant_scan_interval">15000</integer>
+    <integer translatable="false" name="config_wifi_supplicant_scan_interval">22000</integer>
 
     <!-- Integer indicating amount of time failed networks areblacklisted for the purpose
          of network switching in milliseconds -->
@@ -537,7 +537,7 @@
     <bool name="config_automatic_brightness_available">false</bool>
 
     <!-- Fast brightness animation ramp rate -->
-    <integer translatable="false" name="config_brightness_ramp_rate_fast">200</integer>
+    <integer translatable="false" name="config_brightness_ramp_rate_fast">100</integer>
 
     <!-- Don't name config resources like this.  It should look like config_annoyDianne -->
     <bool name="config_annoy_dianne">true</bool>
@@ -554,7 +554,7 @@
     <bool name="config_useAttentionLight">false</bool>
 
     <!-- If this is true, the screen will fade off. -->
-    <bool name="config_animateScreenLights">false</bool>
+    <bool name="config_animateScreenLights">true</bool>
 
     <!-- If this is true, key chords can be used to take a screenshot on the device. -->
     <bool name="config_enableScreenshotChord">true</bool>
@@ -786,14 +786,14 @@
             1 - Toggle theater mode setting
             2 - Brightness boost
     -->
-    <integer name="config_doublePressOnPowerBehavior">0</integer>
+    <integer name="config_doublePressOnPowerBehavior">1</integer>
 
     <!-- Control the behavior when the user triple presses the power button.
             0 - Nothing
             1 - Toggle theater mode setting
             2 - Brightness boost
     -->
-    <integer name="config_triplePressOnPowerBehavior">0</integer>
+    <integer name="config_triplePressOnPowerBehavior">2</integer>
 
     <!-- Control the behavior when the user presses the sleep button.
             0 - Go to sleep (doze)
@@ -1408,7 +1408,7 @@
          NORMAL also preserves durability in non-WAL modes and uses checksums to ensure
          integrity although there is a small chance that an error might go unnoticed.
          Choices are: FULL, NORMAL, OFF. -->
-    <string name="db_default_sync_mode" translatable="false">FULL</string>
+    <string name="db_default_sync_mode" translatable="false">NORMAL</string>
 
     <!-- The database synchronization mode when using Write-Ahead Logging.
          FULL is safest and preserves durability at the cost of extra fsyncs.
@@ -1416,7 +1416,7 @@
          and after checkpoint operations.  If checkpoints are infrequent and power loss
          occurs, then committed transactions could be lost and applications might break.
          Choices are: FULL, NORMAL, OFF. -->
-    <string name="db_wal_sync_mode" translatable="false">FULL</string>
+    <string name="db_wal_sync_mode" translatable="false">NORMAL</string>
 
     <!-- The Write-Ahead Log auto-checkpoint interval in database pages (typically 1 to 4KB).
          The log is checkpointed automatically whenever it exceeds this many pages.
@@ -1624,7 +1624,7 @@
 
     <!-- If true, the doze component is not started until after the screen has been
          turned off and the screen off animation has been performed. -->
-    <bool name="config_dozeAfterScreenOff">false</bool>
+    <bool name="config_dozeAfterScreenOff">true</bool>
 
     <!-- Power Management: Specifies whether to decouple the auto-suspend state of the
          device from the display on/off state.
@@ -1644,7 +1644,7 @@
 
          Refer to autosuspend.h for details.
     -->
-    <bool name="config_powerDecoupleAutoSuspendModeFromDisplay">false</bool>
+    <bool name="config_powerDecoupleAutoSuspendModeFromDisplay">true</bool>
 
     <!-- Power Management: Specifies whether to decouple the interactive state of the
          device from the display on/off state.
@@ -2073,8 +2073,7 @@
          -->
     <string-array translatable="false" name="config_globalActionsList">
         <item>power</item>
-        <item>bugreport</item>
-        <item>users</item>
+        <item>reboot</item>
     </string-array>
 
     <!-- Number of milliseconds to hold a wake lock to ensure that drawing is fully
@@ -2335,7 +2334,7 @@
     <bool name="config_allowAnimationsInLowPowerMode">false</bool>
 
     <!-- Whether device supports double tap to wake -->
-    <bool name="config_supportDoubleTapWake">false</bool>
+    <bool name="config_supportDoubleTapWake">true</bool>
 
     <!-- The RadioAccessFamilies supported by the device.
          Empty is viewed as "all".  Only used on devices which
