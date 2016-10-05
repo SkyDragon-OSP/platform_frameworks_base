@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 The Android Open Source Project
+h * Copyright (C) 2009 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -928,7 +928,7 @@ public class WallpaperManager {
             /* Set the wallpaper to the default values */
             ParcelFileDescriptor fd = sGlobals.mService.setWallpaper(
                     "res:" + resources.getResourceName(resid),
-                    mContext.getOpPackageName(), null, false, result, which, completion);
+                    mContext.getOpPackageName(), null, result, which, completion);
             if (fd != null) {
                 FileOutputStream fos = null;
                 boolean ok = false;
@@ -1038,8 +1038,7 @@ public class WallpaperManager {
         final WallpaperSetCompletion completion = new WallpaperSetCompletion();
         try {
             ParcelFileDescriptor fd = sGlobals.mService.setWallpaper(null,
-                    mContext.getOpPackageName(), visibleCropHint, allowBackup,
-                    result, which, completion);
+                    mContext.getOpPackageName(), visibleCropHint, result, which, completion);
             if (fd != null) {
                 FileOutputStream fos = null;
                 try {
@@ -1164,8 +1163,7 @@ public class WallpaperManager {
         final WallpaperSetCompletion completion = new WallpaperSetCompletion();
         try {
             ParcelFileDescriptor fd = sGlobals.mService.setWallpaper(null,
-                    mContext.getOpPackageName(), visibleCropHint, allowBackup,
-                    result, which, completion);
+                    mContext.getOpPackageName(), visibleCropHint, result, which, completion);
             if (fd != null) {
                 FileOutputStream fos = null;
                 try {
@@ -1647,25 +1645,6 @@ public class WallpaperManager {
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
-    }
-
-    /**
-     * Is the current system wallpaper eligible for backup?
-     *
-     * Only the OS itself may use this method.
-     * @hide
-     */
-    public boolean isWallpaperBackupEligible() {
-        if (sGlobals.mService == null) {
-            Log.w(TAG, "WallpaperService not running");
-            throw new RuntimeException(new DeadSystemException());
-        }
-        try {
-            return sGlobals.mService.isWallpaperBackupEligible(mContext.getUserId());
-        } catch (RemoteException e) {
-            Log.e(TAG, "Exception querying wallpaper backup eligibility: " + e.getMessage());
-        }
-        return false;
     }
 
     // Private completion callback for setWallpaper() synchronization
