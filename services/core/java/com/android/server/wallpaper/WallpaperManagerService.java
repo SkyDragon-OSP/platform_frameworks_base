@@ -34,7 +34,6 @@ import android.app.PendingIntent;
 import android.app.WallpaperInfo;
 import android.app.WallpaperManager;
 import android.app.admin.DevicePolicyManager;
-import android.app.backup.BackupManager;
 import android.app.backup.WallpaperBackupHelper;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -61,6 +60,7 @@ import android.os.FileObserver;
 import android.os.FileUtils;
 import android.os.IBinder;
 import android.os.IRemoteCallback;
+import android.os.Process;
 import android.os.ParcelFileDescriptor;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
@@ -207,7 +207,8 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
             if (path == null) {
                 return;
             }
-            final boolean written = (event == CLOSE_WRITE || event == MOVED_TO);
+            final boolean moved = (event == MOVED_TO);
+            final boolean written = (event == CLOSE_WRITE || moved);
             final File changedFile = new File(mWallpaperDir, path);
 
             // System and system+lock changes happen on the system wallpaper input file;
@@ -239,13 +240,6 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
             }
 
             synchronized (mLock) {
-                if (sysWallpaperChanged || mWallpaperInfoFile.equals(changedFile)) {
-                    // changing the wallpaper means we'll need to back up the new one
-                    long origId = Binder.clearCallingIdentity();
-                    BackupManager bm = new BackupManager(mContext);
-                    bm.dataChanged();
-                    Binder.restoreCallingIdentity(origId);
-                }
                 if (sysWallpaperChanged || lockWallpaperChanged) {
                     notifyCallbacksLocked(wallpaper);
                     if (wallpaper.wallpaperComponent == null
@@ -258,6 +252,16 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
                             // of that work.
                             if (DEBUG) {
                                 Slog.v(TAG, "Wallpaper written; generating crop");
+                            }
+                            if (moved) {
+                                // This is a restore, so generate the crop using any just-restored new
+                                // crop guidelines, making sure to preserve our local dimension hints.
+                                // We also make sure to reapply the correct SELinux label.
+                                if (DEBUG) {
+                                    Slog.v(TAG, "moved-to, therefore restore; reloading metadata");
+                                }
+                                SELinux.restorecon(changedFile);
+                                loadSettingsLocked(wallpaper.userId, true);
                             }
                             generateCrop(wallpaper);
                             if (DEBUG) {
@@ -508,6 +512,11 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
          * Callback once the set + crop is finished
          */
         IWallpaperManagerCallback setComplete;
+
+        /**
+         * Is the OS allowed to back up this wallpaper imagery?
+         */
+        boolean allowBackup;
 
         /**
          * Resource name if using a picture from the wallpaper gallery
@@ -830,7 +839,7 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
         mMonitor = new MyPackageMonitor();
         mMonitor.register(context, null, UserHandle.ALL, true);
         getWallpaperDir(UserHandle.USER_SYSTEM).mkdirs();
-        loadSettingsLocked(UserHandle.USER_SYSTEM);
+        loadSettingsLocked(UserHandle.USER_SYSTEM, false);
     }
 
     private static File getWallpaperDir(int userId) {
@@ -1036,7 +1045,7 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
             wallpaper = mWallpaperMap.get(userId);
             if (wallpaper == null) {
                 // Might need to bring it in the first time to establish our rewrite
-                loadSettingsLocked(userId);
+                loadSettingsLocked(userId, false);
                 wallpaper = mWallpaperMap.get(userId);
             }
         }
@@ -1114,7 +1123,7 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
                 WallpaperData wd = mWallpaperMap.get(user.id);
                 if (wd == null) {
                     // User hasn't started yet, so load her settings to peek at the wallpaper
-                    loadSettingsLocked(user.id);
+                    loadSettingsLocked(user.id, false);
                     wd = mWallpaperMap.get(user.id);
                 }
                 if (wd != null && name.equals(wd.name)) {
@@ -1247,7 +1256,7 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
             if (wallpaper == null) {
                 // common case, this is the first lookup post-boot of the system or
                 // unified lock, so we bring up the saved state lazily now and recheck.
-                loadSettingsLocked(wallpaperUserId);
+                loadSettingsLocked(wallpaperUserId, false);
                 wallpaper = whichSet.get(wallpaperUserId);
                 if (wallpaper == null) {
                     return null;
@@ -1316,7 +1325,8 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
 
     @Override
     public ParcelFileDescriptor setWallpaper(String name, String callingPackage,
-            Rect cropHint, Bundle extras, int which, IWallpaperManagerCallback completion) {
+            Rect cropHint, boolean allowBackup, Bundle extras, int which,
+            IWallpaperManagerCallback completion) {
         checkPermission(android.Manifest.permission.SET_WALLPAPER);
 
         if ((which & (FLAG_LOCK|FLAG_SYSTEM)) == 0) {
@@ -1366,6 +1376,9 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
                     wallpaper.whichPending = which;
                     wallpaper.setComplete = completion;
                     wallpaper.cropHint.set(cropHint);
+                    if ((which & FLAG_SYSTEM) != 0) {
+                        wallpaper.allowBackup = allowBackup;
+                    }
                 }
                 return pfd;
             } finally {
@@ -1707,6 +1720,16 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
         return !um.hasUserRestriction(UserManager.DISALLOW_SET_WALLPAPER);
     }
 
+    @Override
+    public boolean isWallpaperBackupEligible(int userId) {
+        if (Binder.getCallingUid() != Process.SYSTEM_UID) {
+            throw new SecurityException("Only the system may call isWallpaperBackupEligible");
+        }
+
+        WallpaperData wallpaper = getWallpaperSafeLocked(userId, FLAG_SYSTEM);
+        return (wallpaper != null) ? wallpaper.allowBackup : false;
+    }
+
     private static JournaledFile makeJournaledFile(int userId) {
         final String base = new File(getWallpaperDir(userId), WALLPAPER_INFO).getAbsolutePath();
         return new JournaledFile(new File(base), new File(base + ".tmp"));
@@ -1777,6 +1800,11 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
             out.attribute(null, "component",
                     wallpaper.wallpaperComponent.flattenToShortString());
         }
+
+        if (wallpaper.allowBackup) {
+            out.attribute(null, "backup", "true");
+        }
+
         out.endTag(null, tag);
     }
 
@@ -1820,7 +1848,7 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
         if (wallpaper == null) {
             // common case, this is the first lookup post-boot of the system or
             // unified lock, so we bring up the saved state lazily now and recheck.
-            loadSettingsLocked(userId);
+            loadSettingsLocked(userId, false);
             wallpaper = whichSet.get(userId);
             // if it's still null here, this is a lock-only operation and there is not
             // yet a lock-only wallpaper set for this user, so we need to establish
@@ -1844,7 +1872,7 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
         return wallpaper;
     }
 
-    private void loadSettingsLocked(int userId) {
+    private void loadSettingsLocked(int userId, boolean keepDimensionHints) {
         if (DEBUG) Slog.v(TAG, "loadSettingsLocked");
 
         JournaledFile journal = makeJournaledFile(userId);
@@ -1857,6 +1885,7 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
         WallpaperData wallpaper = mWallpaperMap.get(userId);
         if (wallpaper == null) {
             wallpaper = new WallpaperData(userId, WALLPAPER, WALLPAPER_CROP);
+            wallpaper.allowBackup = true;
             mWallpaperMap.put(userId, wallpaper);
             if (!wallpaper.cropExists()) {
                 generateCrop(wallpaper);
@@ -1875,7 +1904,7 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
                     String tag = parser.getName();
                     if ("wp".equals(tag)) {
                         // Common to system + lock wallpapers
-                        parseWallpaperAttributes(parser, wallpaper);
+                        parseWallpaperAttributes(parser, wallpaper, keepDimensionHints);
 
                         // A system wallpaper might also be a live wallpaper
                         String comp = parser.getAttributeValue(null, "component");
@@ -1904,7 +1933,7 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
                                     WALLPAPER_LOCK_ORIG, WALLPAPER_LOCK_CROP);
                             mLockWallpaperMap.put(userId, lockWallpaper);
                         }
-                        parseWallpaperAttributes(parser, lockWallpaper);
+                        parseWallpaperAttributes(parser, lockWallpaper, false);
                     }
                 }
             } while (type != XmlPullParser.END_DOCUMENT);
@@ -1965,7 +1994,8 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
         }
     }
 
-    private void parseWallpaperAttributes(XmlPullParser parser, WallpaperData wallpaper) {
+    private void parseWallpaperAttributes(XmlPullParser parser, WallpaperData wallpaper,
+            boolean keepDimensionHints) {
         final String idString = parser.getAttributeValue(null, "id");
         if (idString != null) {
             final int id = wallpaper.wallpaperId = Integer.parseInt(idString);
@@ -1976,9 +2006,11 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
             wallpaper.wallpaperId = makeWallpaperIdLocked();
         }
 
-        wallpaper.width = Integer.parseInt(parser.getAttributeValue(null, "width"));
-        wallpaper.height = Integer.parseInt(parser
-                .getAttributeValue(null, "height"));
+        if (!keepDimensionHints) {
+            wallpaper.width = Integer.parseInt(parser.getAttributeValue(null, "width"));
+            wallpaper.height = Integer.parseInt(parser
+                    .getAttributeValue(null, "height"));
+        }
         wallpaper.cropHint.left = getAttributeInt(parser, "cropLeft", 0);
         wallpaper.cropHint.top = getAttributeInt(parser, "cropTop", 0);
         wallpaper.cropHint.right = getAttributeInt(parser, "cropRight", 0);
@@ -1988,6 +2020,7 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
         wallpaper.padding.right = getAttributeInt(parser, "paddingRight", 0);
         wallpaper.padding.bottom = getAttributeInt(parser, "paddingBottom", 0);
         wallpaper.name = parser.getAttributeValue(null, "name");
+        wallpaper.allowBackup = "true".equals(parser.getAttributeValue(null, "backup"));
     }
 
     private int getMaximumSizeDimension() {
@@ -2008,9 +2041,10 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
         WallpaperData wallpaper = null;
         boolean success = false;
         synchronized (mLock) {
-            loadSettingsLocked(UserHandle.USER_SYSTEM);
+            loadSettingsLocked(UserHandle.USER_SYSTEM, false);
             wallpaper = mWallpaperMap.get(UserHandle.USER_SYSTEM);
             wallpaper.wallpaperId = makeWallpaperIdLocked();    // always bump id at restore
+            wallpaper.allowBackup = true;   // by definition if it was restored
             if (wallpaper.nextWallpaperComponent != null
                     && !wallpaper.nextWallpaperComponent.equals(mImageWallpaper)) {
                 if (!bindWallpaperComponentLocked(wallpaper.nextWallpaperComponent, false, false,
