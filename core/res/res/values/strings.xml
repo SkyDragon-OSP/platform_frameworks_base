@@ -2815,7 +2815,7 @@
     <string name="android_preparing_apk">Preparing <xliff:g id="appname">%1$s</xliff:g>.</string>
 
     <!-- [CHAR LIMIT=NONE] Message to show in upgrading dialog when reached the point of starting apps. -->
-    <string name="android_upgrading_starting_apps">Starting apps.</string>
+    <string name="android_upgrading_starting_apps">Starting apps...</string>
 
     <!-- [CHAR LIMIT=NONE] Message to show in upgrading dialog when the bulk of the upgrade work is done. -->
     <string name="android_upgrading_complete">Poking the Dragon..</string>
@@ -2957,7 +2957,7 @@
     <string name="wifi_watchdog_network_disabled_detailed">\u0020has a poor Internet connection.</string>
 
     <!-- Do not translate. Default access point SSID used for tethering -->
-    <string name="wifi_tether_configure_ssid_default" translatable="false">AndroidAP</string>
+    <string name="wifi_tether_configure_ssid_default" translatable="false">SkyDragonAP</string>
 
     <!-- A notification is shown the first time a connection is attempted on an app owned AP -->
     <!-- title for this message -->
