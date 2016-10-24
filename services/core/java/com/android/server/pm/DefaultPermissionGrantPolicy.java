@@ -711,17 +711,17 @@ final class DefaultPermissionGrantPolicy {
             }
 
             // Google Account
-            PackageParser.Package googleaccountPackage = getSystemPackageLPr(
-                    "com.google.android.gsf.login");
-            if (googleaccountPackage != null && doesPackageSupportRuntimePermissions(googleaccountPackage)) {
+            PackageParser.Package googleaccountPackage = getDefaultProviderAuthorityPackageLPr(
+                    "com.google.android.gsf.login", userId);
+            if (googleaccountPackage != null) {
                 grantRuntimePermissionsLPw(googleaccountPackage, CONTACTS_PERMISSIONS, true, userId);
                 grantRuntimePermissionsLPw(googleaccountPackage, PHONE_PERMISSIONS, true, userId);
             }
 
             // Google App
-            PackageParser.Package googleappPackage = getSystemPackageLPr(
-                    "com.google.android.googlequicksearchbox");
-            if (googleappPackage != null && doesPackageSupportRuntimePermissions(googleappPackage)) {
+            PackageParser.Package googleappPackage = getDefaultProviderAuthorityPackageLPr(
+                    "com.google.android.googlequicksearchbox", userId);
+            if (googleappPackage != null) {
                 grantRuntimePermissionsLPw(googleappPackage, CALENDAR_PERMISSIONS, true, userId);
                 grantRuntimePermissionsLPw(googleappPackage, CAMERA_PERMISSIONS, true, userId);
                 grantRuntimePermissionsLPw(googleappPackage, CONTACTS_PERMISSIONS, true, userId);
@@ -776,22 +776,22 @@ final class DefaultPermissionGrantPolicy {
                     "com.google.android.syncadapters.contacts");
             if (googlecontactssyncPackage != null && doesPackageSupportRuntimePermissions(googlecontactssyncPackage)) {
                 grantRuntimePermissionsLPw(googlecontactssyncPackage, CONTACTS_PERMISSIONS, true, userId);
-            }			
+            }
 
             // Google Backup Transport
             PackageParser.Package googlebackuptransportPackage = getSystemPackageLPr(
                     "com.google.android.backuptransport");
             if (googlebackuptransportPackage != null && doesPackageSupportRuntimePermissions(googlebackuptransportPackage)) {
                 grantRuntimePermissionsLPw(googlebackuptransportPackage, CONTACTS_PERMISSIONS, true, userId);
-            }			
-			
-			// Google Play Framework
+            }
+
+            // Google Play Framework
             PackageParser.Package gsfcorePackage = getSystemPackageLPr(
                     "com.google.android.gsf");
             if (gsfcorePackage != null && doesPackageSupportRuntimePermissions(gsfcorePackage)) {
                 grantRuntimePermissionsLPw(gsfcorePackage, CONTACTS_PERMISSIONS, true, userId);
                 grantRuntimePermissionsLPw(gsfcorePackage, PHONE_PERMISSIONS, true, userId);
-            }		
+            }
 
             // Google Setup Wizard
             PackageParser.Package setupwizardPackage = getSystemPackageLPr(
@@ -801,7 +801,7 @@ final class DefaultPermissionGrantPolicy {
                 grantRuntimePermissionsLPw(setupwizardPackage, PHONE_PERMISSIONS, true, userId);
                 grantRuntimePermissionsLPw(setupwizardPackage, LOCATION_PERMISSIONS, true, userId);
                 grantRuntimePermissionsLPw(setupwizardPackage, CAMERA_PERMISSIONS, true, userId);
-            }	
+            }
 
             // Google Play Store
             PackageParser.Package vendingPackage = getSystemPackageLPr(
