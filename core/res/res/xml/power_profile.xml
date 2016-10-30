@@ -28,27 +28,30 @@
        significantly, so should be measured on the shipping platform
        with a power meter. -->
   <item name="none">0</item>
-  <item name="screen.on">0.1</item>  <!-- ~200mA -->
-  <item name="screen.full">0.1</item>  <!-- ~300mA -->
-  <item name="bluetooth.active">0.1</item> <!-- Bluetooth data transfer, ~10mA -->
-  <item name="bluetooth.on">0.1</item>  <!-- Bluetooth on & connectable, but not connected, ~0.1mA -->
-  <item name="wifi.on">0.1</item>  <!-- ~3mA -->
-  <item name="wifi.active">0.1</item>  <!-- WIFI data transfer, ~200mA -->
-  <item name="wifi.scan">0.1</item>  <!-- WIFI network scanning, ~100mA -->
-  <item name="dsp.audio">0.1</item> <!-- ~10mA -->
-  <item name="dsp.video">0.1</item> <!-- ~50mA -->
+  <item name="screen.on">16934278765</item>  <!-- ~200mA -->
+  <item name="screen.full">79.09344216</item>  <!-- ~300mA -->
+  <item name="bluetooth.active">25.2</item> <!-- Bluetooth data transfer, ~10mA -->
+  <item name="bluetooth.on">1.7</item>  <!-- Bluetooth on & connectable, but not connected, ~0.1mA -->
+  <item name="wifi.on">21.21733311</item>  <!-- ~3mA -->
+  <item name="wifi.active">98.04989804</item>  <!-- WIFI data transfer, ~200mA -->
+  <item name="wifi.scan">129.8951166</item>  <!-- WIFI network scanning, ~100mA -->
+  <item name="dsp.audio">26.5</item> <!-- ~10mA -->
+  <item name="dsp.video">242.0</item> <!-- ~50mA -->
   <item name="camera.flashlight">0.1</item> <!-- Avg. power for camera flash, ~160mA -->
   <item name="camera.avg">0.1</item> <!-- Avg. power use of camera in standard usecases, ~550mA -->
-  <item name="gps.on">0.1</item> <!-- ~50mA -->
+  <item name="gps.on">5.661105191</item> <!-- ~50mA -->
 
   <!-- Radio related values. For modems without energy reporting support in firmware, use
        radio.active, radio.scanning, and radio.on. -->
-  <item name="radio.active">0.1</item> <!-- ~200mA -->
-  <item name="radio.scanning">0.1</item> <!-- cellular radio scanning for signal, ~10mA -->
+  <item name="radio.active">64.8918361</item> <!-- ~200mA -->
+  <item name="radio.scanning">19.13559783</item> <!-- cellular radio scanning for signal, ~10mA -->
   <!-- Current consumed by the radio at different signal strengths, when paging -->
   <array name="radio.on"> <!-- Strength 0 to BINS-1 -->
-      <value>0.2</value> <!-- ~2mA -->
-      <value>0.1</value> <!-- ~1mA -->
+      <value>17.52231575</value>
+      <value>5.902211798</value>
+      <value>6.454893079</value>
+      <value>6.771166916</value>
+      <value>6.725541238</value>
   </array>
 
 
@@ -110,11 +113,11 @@
   <item name="wifi.controller.voltage">0</item>
 
   <array name="wifi.batchedscan"> <!-- mA -->
-    <value>.0002</value> <!-- 1-8/hr -->
-    <value>.002</value>  <!-- 9-64/hr -->
-    <value>.02</value>   <!-- 65-512/hr -->
-    <value>.2</value>    <!-- 513-4,096/hr -->
-    <value>2</value>    <!-- 4097-/hr -->
+    <value>.0003</value> <!-- 1-8/hr -->
+    <value>.003</value>  <!-- 9-64/hr -->
+    <value>.03</value>   <!-- 65-512/hr -->
+    <value>.3</value>    <!-- 513-4,096/hr -->
+    <value>3</value>    <!-- 4097-/hr -->
   </array>
 
 </device>

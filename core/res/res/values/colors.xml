@@ -44,16 +44,16 @@
     <color name="bright_foreground_light_disabled">#80000000</color>
     <color name="bright_foreground_dark_inverse">@android:color/bright_foreground_light</color>
     <color name="bright_foreground_light_inverse">@android:color/bright_foreground_dark</color>
-    <color name="dim_foreground_dark">#bebebe</color>
+    <color name="dim_foreground_dark">#ffbebebe</color>
     <color name="dim_foreground_dark_disabled">#80bebebe</color>
-    <color name="dim_foreground_dark_inverse">#323232</color>
+    <color name="dim_foreground_dark_inverse">#ff323232</color>
     <color name="dim_foreground_dark_inverse_disabled">#80323232</color>
-    <color name="hint_foreground_dark">#808080</color>
-    <color name="dim_foreground_light">#323232</color>
+    <color name="hint_foreground_dark">#ff808080</color>
+    <color name="dim_foreground_light">#ff323232</color>
     <color name="dim_foreground_light_disabled">#80323232</color>
-    <color name="dim_foreground_light_inverse">#bebebe</color>
+    <color name="dim_foreground_light_inverse">#ffbebebe</color>
     <color name="dim_foreground_light_inverse_disabled">#80bebebe</color>
-    <color name="hint_foreground_light">#808080</color>
+    <color name="hint_foreground_light">#ff808080</color>
     <color name="highlighted_text_dark">#9983CC39</color>
     <color name="highlighted_text_light">#9983CC39</color>
     <color name="link_text_dark">#5c5cff</color>
@@ -80,17 +80,17 @@
     <drawable name="selected_day_background">#ff0092f4</drawable>
 
     <!-- For settings framework -->
-    <color name="lighter_gray">#ddd</color>
+    <color name="lighter_gray">#ffdddddd</color>
     <color name="darker_gray">#aaa</color>
 
     <!-- For security permissions -->
-    <color name="perms_dangerous_grp_color">#33b5e5</color>
-    <color name="perms_dangerous_perm_color">#33b5e5</color>
+    <color name="perms_dangerous_grp_color">#ff33b5e5</color>
+    <color name="perms_dangerous_perm_color">#ff33b5e5</color>
     <color name="shadow">#cc222222</color>
     <color name="perms_costs_money">#fff4511e</color>
     
     <!-- For search-related UIs -->
-    <color name="search_url_text_normal">#7fa87f</color>
+    <color name="search_url_text_normal">#ff7fa87f</color>
     <color name="search_url_text_selected">@android:color/black</color>
     <color name="search_url_text_pressed">@android:color/black</color>
     <color name="search_widget_corpus_item_background">@android:color/lighter_gray</color>
@@ -100,11 +100,11 @@
     <color name="sliding_tab_text_color_shadow">@android:color/black</color>
 
     <!-- keyguard tab -->
-    <color name="keyguard_text_color_normal">#ffffff</color>
-    <color name="keyguard_text_color_unlock">#a7d84c</color>
-    <color name="keyguard_text_color_soundoff">#ffffff</color>
-    <color name="keyguard_text_color_soundon">#e69310</color>
-    <color name="keyguard_text_color_decline">#fe0a5a</color>
+    <color name="keyguard_text_color_normal">#ffffffff</color>
+    <color name="keyguard_text_color_unlock">#ffa7d84c</color>
+    <color name="keyguard_text_color_soundoff">#ffffffff</color>
+    <color name="keyguard_text_color_soundon">#ffe69310</color>
+    <color name="keyguard_text_color_decline">#fffe0a5a</color>
 
     <!-- keyguard clock -->
     <color name="lockscreen_clock_background">#ffffffff</color>
@@ -125,7 +125,7 @@
     <!-- FaceLock -->
     <color name="facelock_spotlight_mask">#CC000000</color>
 
-    <color name="micro_text_light">#434343</color>
+    <color name="micro_text_light">#ff434343</color>
 
     <drawable name="notification_template_icon_bg">#3333B5E5</drawable>
     <drawable name="notification_template_icon_low_bg">#0cffffff</drawable>
