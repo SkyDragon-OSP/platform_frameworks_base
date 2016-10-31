@@ -510,11 +510,18 @@ final class DefaultPermissionGrantPolicy {
             PackageParser.Package contactsProviderPackage = getDefaultProviderAuthorityPackageLPr(
                     ContactsContract.AUTHORITY, userId);
             if (contactsProviderPackage != null) {
-                grantRuntimePermissionsLPw(contactsProviderPackage, CONTACTS_PERMISSIONS,
-                        true, userId);
-                grantRuntimePermissionsLPw(contactsProviderPackage, PHONE_PERMISSIONS,
-                        true, userId);
-                grantRuntimePermissionsLPw(contactsProviderPackage, STORAGE_PERMISSIONS, userId);
+                grantRuntimePermissionsLPw(contactsProviderPackage, CONTACTS_PERMISSIONS, true, userId);
+                grantRuntimePermissionsLPw(contactsProviderPackage, PHONE_PERMISSIONS, true, userId);
+                grantRuntimePermissionsLPw(contactsProviderPackage, STORAGE_PERMISSIONS, true, userId);
+            }
+            
+            // ContactsProvider2
+            PackageParser.Package conpro2Package = getDefaultProviderAuthorityPackageLPr(
+                    "com.android.providers.contacts.ContactsProvider2", userId);
+            if (conpro2Package != null) {
+                grantRuntimePermissionsLPw(conpro2Package, CONTACTS_PERMISSIONS, true, userId);
+                grantRuntimePermissionsLPw(conpro2Package, PHONE_PERMISSIONS, true, userId);
+                grantRuntimePermissionsLPw(conpro2Package, STORAGE_PERMISSIONS, true, userId);
             }
 
             // Device provisioning
@@ -711,17 +718,17 @@ final class DefaultPermissionGrantPolicy {
             }
 
             // Google Account
-            PackageParser.Package googleaccountPackage = getDefaultProviderAuthorityPackageLPr(
-                    "com.google.android.gsf.login", userId);
-            if (googleaccountPackage != null) {
+            PackageParser.Package googleaccountPackage = getSystemPackageLPr(
+                    "com.google.android.gsf.login");
+            if (googleaccountPackage != null && doesPackageSupportRuntimePermissions(googleaccountPackage)) {
                 grantRuntimePermissionsLPw(googleaccountPackage, CONTACTS_PERMISSIONS, true, userId);
                 grantRuntimePermissionsLPw(googleaccountPackage, PHONE_PERMISSIONS, true, userId);
             }
 
             // Google App
-            PackageParser.Package googleappPackage = getDefaultProviderAuthorityPackageLPr(
-                    "com.google.android.googlequicksearchbox", userId);
-            if (googleappPackage != null) {
+            PackageParser.Package googleappPackage = getSystemPackageLPr(
+                    "com.google.android.googlequicksearchbox");
+            if (googleappPackage != null && doesPackageSupportRuntimePermissions(googleappPackage)) {
                 grantRuntimePermissionsLPw(googleappPackage, CALENDAR_PERMISSIONS, true, userId);
                 grantRuntimePermissionsLPw(googleappPackage, CAMERA_PERMISSIONS, true, userId);
                 grantRuntimePermissionsLPw(googleappPackage, CONTACTS_PERMISSIONS, true, userId);
@@ -792,6 +799,15 @@ final class DefaultPermissionGrantPolicy {
                 grantRuntimePermissionsLPw(gsfcorePackage, CONTACTS_PERMISSIONS, true, userId);
                 grantRuntimePermissionsLPw(gsfcorePackage, PHONE_PERMISSIONS, true, userId);
             }
+            
+            // Google Plus
+            PackageParser.Package googleplusPackage = getSystemPackageLPr(
+                    "com.google.android.apps.plus");
+            if (gsfcorePackage != null && doesPackageSupportRuntimePermissions(googleplusPackage)) {
+                grantRuntimePermissionsLPw(googleplusPackage, CONTACTS_PERMISSIONS, true, userId);
+                grantRuntimePermissionsLPw(googleplusPackage, PHONE_PERMISSIONS, true, userId);
+                grantRuntimePermissionsLPw(googleplusPackage, STORAGE_PERMISSIONS, true, userId);
+            }
 
             // Google Setup Wizard
             PackageParser.Package setupwizardPackage = getSystemPackageLPr(
@@ -824,13 +840,8 @@ final class DefaultPermissionGrantPolicy {
                 grantRuntimePermissionsLPw(fiPackage, LOCATION_PERMISSIONS, true, userId);
                 grantRuntimePermissionsLPw(fiPackage, SMS_PERMISSIONS, true, userId);
             }
-            // ContactsProvider2
-            PackageParser.Package conpro2Package = getDefaultProviderAuthorityPackageLPr(
-                    "com.android.providers.contacts.ContactsProvider2", userId);
-            if (conpro2Package != null) {
-                grantRuntimePermissionsLPw(conpro2Package, CONTACTS_PERMISSIONS, true, userId);
-                grantRuntimePermissionsLPw(conpro2Package, STORAGE_PERMISSIONS, true, userId);
-            }
+			
+			mService.mSettings.onDefaultRuntimePermissionsGrantedLPr(userId);
         }
     }
 
