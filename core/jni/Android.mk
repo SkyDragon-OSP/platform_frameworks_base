@@ -283,7 +283,15 @@ LOCAL_CFLAGS += -Wall -Wno-error=deprecated-declarations -Wno-unused -Wno-unreac
 #                        is not being compiled with that level. Remove once this has changed.
 LOCAL_CLANG_CFLAGS += -Wno-c++11-extensions
 LOCAL_CLANG := true
-
+LOCAL_SDCLANG := true
+ifeq ($(LOCAL_SDCLANG), true)
+include $(SDCLANG_FLAG_DEFS)
+endif
+ifeq ($(SDCLANG), true)
+ifeq ($(LOCAL_SDCLANG_LTO), true)
+include $(SDCLANG_LTO_DEFS)
+endif
+endif
 include $(BUILD_SHARED_LIBRARY)
 
 include $(call all-makefiles-under,$(LOCAL_PATH))
