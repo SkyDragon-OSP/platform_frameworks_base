@@ -66,8 +66,7 @@ public class DataUsageDetailView extends LinearLayout {
         final Resources res = mContext.getResources();
         final int titleId;
         final long bytes;
-
-        @ColorInt int usageColor = R.color.data_usage_primary;
+        @ColorInt int usageColor = 0;
         final String top;
         String bottom = null;
         if (info.usageLevel < info.warningLevel || info.limitLevel <= 0) {
