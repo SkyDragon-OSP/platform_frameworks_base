@@ -6347,12 +6347,6 @@ public final class Settings {
         public static final String DEMO_USER_SETUP_COMPLETE
                 = "demo_user_setup_complete";
 
-       /**
-         * Whether the device should tint notification title.
-         * @hide
-         */
-        public static final String NOTIFICATION_TITLE_TINT = "notification_title_tint";
-
         /**
          * Whether to display the ADB notification.
          * @hide
