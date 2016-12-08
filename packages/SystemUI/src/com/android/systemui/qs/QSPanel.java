@@ -217,7 +217,7 @@ public class QSPanel extends LinearLayout implements Tunable, Callback {
     }
 
     public void onCollapse() {
-        if (mCustomizePanel != null && mCustomizePanel.isShown()) {
+        if (mCustomizePanel != null && mCustomizePanel.isCustomizing()) {
             mCustomizePanel.hide(mCustomizePanel.getWidth() / 2, mCustomizePanel.getHeight() / 2);
         }
     }
@@ -396,7 +396,7 @@ public class QSPanel extends LinearLayout implements Tunable, Callback {
     }
 
     public void closeDetail() {
-        if (mCustomizePanel != null && mCustomizePanel.isShown()) {
+        if (mCustomizePanel != null && mCustomizePanel.isCustomizing()) {
             // Treat this as a detail panel for now, to make things easy.
             mCustomizePanel.hide(mCustomizePanel.getWidth() / 2, mCustomizePanel.getHeight() / 2);
             return;
