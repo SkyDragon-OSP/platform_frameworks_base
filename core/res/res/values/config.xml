@@ -116,17 +116,17 @@
     <bool name="config_sendAudioBecomingNoisy">true</bool>
 
     <!-- The duration (in milliseconds) of a short animation. -->
-    <integer name="config_shortAnimTime">200</integer>
+    <integer name="config_shortAnimTime">100</integer>
 
     <!-- The duration (in milliseconds) of a medium-length animation. -->
-    <integer name="config_mediumAnimTime">400</integer>
+    <integer name="config_mediumAnimTime">200</integer>
 
     <!-- The duration (in milliseconds) of a long animation. -->
-    <integer name="config_longAnimTime">500</integer>
+    <integer name="config_longAnimTime">250</integer>
 
     <!-- The duration (in milliseconds) of the activity open/close and fragment open/close animations. -->
-    <integer name="config_activityShortDur">150</integer>
-    <integer name="config_activityDefaultDur">220</integer>
+    <integer name="config_activityShortDur">75</integer>
+    <integer name="config_activityDefaultDur">110</integer>
 
     <!-- Duration for the dim animation behind a dialog.  This may be either
          a percentage, which is relative to the duration of the enter/open
@@ -484,7 +484,7 @@
     <integer translatable="false" name="config_wifi_framework_network_switch_rx_packet_threshold">20</integer>
 
     <!-- Integer indicating wpa_supplicant scan interval in milliseconds -->
-    <integer translatable="false" name="config_wifi_supplicant_scan_interval">15000</integer>
+    <integer translatable="false" name="config_wifi_supplicant_scan_interval">22000</integer>
 
     <!-- Integer indicating amount of time failed networks areblacklisted for the purpose
          of network switching in milliseconds -->
@@ -569,7 +569,7 @@
     <bool name="config_useAttentionLight">false</bool>
 
     <!-- If this is true, the screen will fade off. -->
-    <bool name="config_animateScreenLights">false</bool>
+    <bool name="config_animateScreenLights">true</bool>
 
     <!-- If this is true, key chords can be used to take a screenshot on the device. -->
     <bool name="config_enableScreenshotChord">true</bool>
@@ -613,7 +613,7 @@
 
     <!-- If true, the screen can be rotated via the accelerometer in all 4
          rotations as the default behavior. -->
-    <bool name="config_allowAllRotations">false</bool>
+    <bool name="config_allowAllRotations">true</bool>
 
     <!-- If true, the direction rotation is applied to get to an application's requested
          orientation is reversed.  Normally, the model is that landscape is
@@ -964,7 +964,7 @@
     <integer name="config_notificationsBatteryLedOn">125</integer>
 
     <!-- Is the notification LED intrusive? Used to decide if there should be a disable option -->
-    <bool name="config_intrusiveNotificationLed">false</bool>
+    <bool name="config_intrusiveNotificationLed">true</bool>
 
     <!-- Default value for LED off time when the battery is low on charge in miliseconds -->
     <integer name="config_notificationsBatteryLedOff">2875</integer>
@@ -1037,15 +1037,15 @@
     <integer name="config_screenBrightnessDoze">1</integer>
 
     <!-- Allow automatic adjusting of the screen brightness while dozing in low power state. -->
-    <bool name="config_allowAutoBrightnessWhileDozing">false</bool>
+    <bool name="config_allowAutoBrightnessWhileDozing">true</bool>
 
     <!-- Stability requirements in milliseconds for accepting a new brightness level.  This is used
          for debouncing the light sensor.  Different constants are used to debounce the light sensor
          when adapting to brighter or darker environments.  This parameter controls how quickly
          brightness changes occur in response to an observed change in light level that exceeds the
          hysteresis threshold. -->
-    <integer name="config_autoBrightnessBrighteningLightDebounce">4000</integer>
-    <integer name="config_autoBrightnessDarkeningLightDebounce">8000</integer>
+    <integer name="config_autoBrightnessBrighteningLightDebounce">2000</integer>
+    <integer name="config_autoBrightnessDarkeningLightDebounce">4000</integer>
 
     <!-- Light sensor event rate in milliseconds for automatic brightness control. -->
     <integer name="config_autoBrightnessLightSensorRate">250</integer>
@@ -1265,8 +1265,11 @@
          that matches the signature of at least one package on this list.
          -->
     <string-array name="config_locationProviderPackageNames" translatable="false">
+        <!-- The Google provider -->
+        <item>com.google.android.gms</item>
         <!-- The standard AOSP fused location provider -->
         <item>com.android.location.fused</item>
+        <item>com.google.android.gms</item>
     </string-array>
 
     <!-- This string array can be overriden to enable test location providers initially. -->
@@ -1443,7 +1446,7 @@
          NORMAL also preserves durability in non-WAL modes and uses checksums to ensure
          integrity although there is a small chance that an error might go unnoticed.
          Choices are: FULL, NORMAL, OFF. -->
-    <string name="db_default_sync_mode" translatable="false">FULL</string>
+    <string name="db_default_sync_mode" translatable="false">NORMAL</string>
 
     <!-- The database synchronization mode when using Write-Ahead Logging.
          FULL is safest and preserves durability at the cost of extra fsyncs.
@@ -1451,7 +1454,7 @@
          and after checkpoint operations.  If checkpoints are infrequent and power loss
          occurs, then committed transactions could be lost and applications might break.
          Choices are: FULL, NORMAL, OFF. -->
-    <string name="db_wal_sync_mode" translatable="false">FULL</string>
+    <string name="db_wal_sync_mode" translatable="false">NORMAL</string>
 
     <!-- The Write-Ahead Log auto-checkpoint interval in database pages (typically 1 to 4KB).
          The log is checkpointed automatically whenever it exceeds this many pages.
@@ -1659,7 +1662,7 @@
 
     <!-- If true, the doze component is not started until after the screen has been
          turned off and the screen off animation has been performed. -->
-    <bool name="config_dozeAfterScreenOff">false</bool>
+    <bool name="config_dozeAfterScreenOff">true</bool>
 
     <!-- Doze: should the TYPE_PICK_UP_GESTURE sensor be used as a pulse signal. -->
     <bool name="config_dozePulsePickup">false</bool>
@@ -1774,7 +1777,7 @@
     </integer-array>
 
     <!-- Set to true to add links to Cell Broadcast app from Settings and MMS app. -->
-    <bool name="config_cellBroadcastAppLinks">false</bool>
+    <bool name="config_cellBroadcastAppLinks" >true</bool>
 
     <!-- The default value if the SyncStorageEngine should sync automatically or not -->
     <bool name="config_syncstorageengine_masterSyncAutomatically">true</bool>
@@ -1952,7 +1955,7 @@
             >com.android.vpndialogs/com.android.vpndialogs.ConfirmDialog</string>
 
     <!-- Apps that are authorized to access shared accounts, overridden by product overlays -->
-    <string name="config_appsAuthorizedForSharedAccounts" translatable="false">;com.android.settings;</string>
+    <string name="config_appsAuthorizedForSharedAccounts" translatable="false">;com.android.vending;com.android.settings;</string>
 
     <!-- Flag indicating that the media framework should not allow changes or mute on any
          stream or master volumes. -->
@@ -2142,7 +2145,7 @@
     </string-array>
 
     <!-- Flag indicating which package name can access the persistent data partition -->
-    <string name="config_persistentDataPackageName" translatable="false"></string>
+    <string name="config_persistentDataPackageName" translatable="false">com.google.android.gms</string>
 
     <!-- Flag indicating apps will skip sending hold request before merge. In this case
         IMS service implementation will do both.i.e.hold followed by merge. -->
@@ -2154,15 +2157,15 @@
     <bool name="imsServiceAllowTurnOff">true</bool>
 
     <!-- Flag specifying whether VoLTE is available on device -->
-    <bool name="config_device_volte_available">false</bool>
+    <bool name="config_device_volte_available">true</bool>
 
     <!-- Flag specifying whether VoLTE should be available for carrier: independent of
          carrier provisioning. If false: hard disabled. If true: then depends on carrier
          provisioning, availability etc -->
-    <bool name="config_carrier_volte_available">false</bool>
+    <bool name="config_carrier_volte_available">true</bool>
 
     <!-- Flag specifying whether VoLTE availability is based on provisioning -->
-    <bool name="config_carrier_volte_provisioned">false</bool>
+    <bool name="config_carrier_volte_provisioned">true</bool>
 
     <!-- Flag specifying whether VoLTE TTY is supported -->
     <bool name="config_carrier_volte_tty_supported">true</bool>
@@ -2529,7 +2532,7 @@
     <string name="config_demoModeLauncherComponent">com.android.retaildemo/.DemoPlayer</string>
 
     <!-- Flag indicating whether round icons should be parsed from the application manifest. -->
-    <bool name="config_useRoundIcon">false</bool>
+    <bool name="config_useRoundIcon">true</bool>
 
     <!-- Flag indicating whether the assist disclosure can be disabled using
          ASSIST_DISCLOSURE_ENABLED. -->
